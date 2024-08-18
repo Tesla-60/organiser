@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Harvard Reference Organizer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            color: #333;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+        .background {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #007acc, #005fa3);
+            clip-path: circle(70% at center);
+            z-index: -1;
+            transition: all 0.5s ease-in-out;
+        }
+        .background:hover {
+            clip-path: circle(100%);
+        }
+        .container {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            width: 60%;
+            max-width: 800px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        .container:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 28px;
+            color: #007acc;
+        }
+        textarea {
+            width: 100%;
+            height: 300px;
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+            resize: none;
+            margin-bottom: 20px;
+            position: relative;
+            transition: border-color 0.3s ease;
+        }
+        textarea:focus {
+            border-color: #007acc;
+            outline: none;
+        }
+        .copy-icon {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            cursor: pointer;
+            color: #007acc;
+            font-size: 24px;
+            transition: color 0.3s ease;
+        }
+        .copy-icon.copied {
+            color: #28a745;
+        }
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+        }
+        button {
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            flex: 1;
+            margin: 0 10px;
+            transition: background-color 0.3s ease;
+        }
+        .organize-button {
+            background-color: #007acc;
+            color: #fff;
+        }
+        .organize-button:hover {
+            background-color: #005fa3;
+        }
+        .clear-button {
+            background-color: #e74c3c;
+            color: #fff;
+        }
+        .clear-button:hover {
+            background-color: #c0392b;
+        }
+    </style>
+</head>
+<body>
+    <div class="background"></div>
+    <div class="container">
+        <h1>Harvard Reference Organizer</h1>
+        <div style="position: relative;">
+            <textarea id="references" placeholder="Paste your Harvard references here..."></textarea>
+            <i class="fa-solid fa-copy copy-icon" onclick="copyToClipboard()" title="Copy to clipboard"></i>
+        </div>
+        <div class="buttons">
+            <button class="organize-button" onclick="organizeReferences()">Organize</button>
+            <button class="clear-button" onclick="clearText()">Clear</button>
+        </div>
+    </div>
+
+    <script>
+        function organizeReferences() {
+            let textArea = document.getElementById('references');
+            let references = textArea.value.split('\n');
+            references = references.filter(ref => ref.trim() !== ''); // Remove empty lines
+            references.sort((a, b) => a.localeCompare(b));
+            textArea.value = references.join('\n');
+        }
+
+        function clearText() {
+            document.getElementById('references').value = '';
+        }
+
+        function copyToClipboard() {
+            let textArea = document.getElementById('references');
+            textArea.select();
+            document.execCommand('copy');
+            let copyIcon = document.querySelector('.copy-icon');
+            copyIcon.classList.add('copied');
+            setTimeout(() => {
+                copyIcon.classList.remove('copied');
+            }, 1000); // Icon turns green for 1 second
+        }
+    </script>
+</body>
+</html>
